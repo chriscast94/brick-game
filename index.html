@@ -23,37 +23,37 @@
     <script>
         var canvas = document.getElementById("myCanvas");
         var ctx = canvas.getContext("2d");
+        //x a& y positions
+        let x = canvas.width / 2;
+        let y = canvas.height - 30;
+        //small values to help make it look like the ball is moving
+        let dx = 2;
+        let dy = -2;
 
-        //begin instruction
-        ctx.beginPath();
-        //rect is for rectangle; numbers are coordinates 
-        //first 2 are width; last 2 are height
-        ctx.rect(20, 40, 50, 50);
-        //can use any function to fill color style
-        ctx.fillStyle = "#FF0000";
-        //used to design named variable
-        ctx.fill();
-        //end instruction
-        ctx.closePath();
 
-        ctx.beginPath();
-        //arc is to make an arch like a circle
-        // x & y coordinates of the center
-        //radius
-        //start/end angle
-        //direction: clockwise (false/default) or counter clockwise(true)
-        ctx.arc(240, 160, 20, 0, Math.PI * 2, false);
-        //fill style can be filled with hex, keyword, rgba(), etc.
-        ctx.fillStyle = "green";
-        ctx.fill();
-        ctx.closePath();
 
-        ctx.beginPath();
-        ctx.rect(160, 10, 100, 40);
-        ctx.strokeStyle = "rgba(0, 0, 255, 0.5)";
-        //only fill outer stroke
-        ctx.stroke();
-        ctx.closePath();
+        function draw() {
+            //clear content so ball isn't in every frame painting a line
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            //begin instruction
+            ctx.beginPath();
+            //arc is circle
+            //x & y are the starting posiiton of the circle
+            ctx.arc(x, y, 10, 0, Math.PI * 2);
+            //color
+            ctx.fillStyle = "#0095DD";
+            ctx.fill();
+            //end instruction
+            ctx.closePath();
+            //paint the ball in a new position after every frame
+            //new frame every 10 milliseconds (serInterval())
+            x += dx;
+            y += dy;
+
+        }
+
+        //function draw will be called every 10 milliseconds
+        setInterval(draw, 10);
 
     </script>
 </body>
