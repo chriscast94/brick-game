@@ -30,11 +30,7 @@
         let dx = 2;
         let dy = -2;
 
-
-
-        function draw() {
-            //clear content so ball isn't in every frame painting a line
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        function drawBall() {
             //begin instruction
             ctx.beginPath();
             //arc is circle
@@ -45,8 +41,15 @@
             ctx.fill();
             //end instruction
             ctx.closePath();
+        }
+
+
+        function draw() {
+            //clear content so ball isn't in every frame painting a line
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            //call drawBall function
+            drawBall();
             //paint the ball in a new position after every frame
-            //new frame every 10 milliseconds (serInterval())
             x += dx;
             y += dy;
 
