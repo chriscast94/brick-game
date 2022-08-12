@@ -29,13 +29,15 @@
         //small values to help make it look like the ball is moving
         let dx = 2;
         let dy = -2;
+        //ball radius
+        const ballRadius = 10;
 
         function drawBall() {
             //begin instruction
             ctx.beginPath();
             //arc is circle
             //x & y are the starting posiiton of the circle
-            ctx.arc(x, y, 10, 0, Math.PI * 2);
+            ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
             //color
             ctx.fillStyle = "#0095DD";
             ctx.fill();
@@ -52,6 +54,17 @@
             //paint the ball in a new position after every frame
             x += dx;
             y += dy;
+
+            //if ball hits side of canvas, bounce in opposite direction
+            if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
+                dx = -dx;
+            }
+            // same as above but top and bottom
+            //use ballRadius to bounce ball from edges not center
+            if (y + dy > canvas.height - ballRadius || y + dy < ballRadius) {
+                dy = -dy;
+            }
+
 
         }
 
