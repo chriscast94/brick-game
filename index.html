@@ -24,14 +24,14 @@
         //canvas
         var canvas = document.getElementById("myCanvas");
         var ctx = canvas.getContext("2d");
+        //ball radius
+        const ballRadius = 10;
         // ball x & y positions
         let x = canvas.width / 2;
         let y = canvas.height - 30;
         //small values to help make it look like the ball is moving
         let dx = 2;
         let dy = -2;
-        //ball radius
-        const ballRadius = 10;
 
         //paddle
         const paddleHeight = 10;
@@ -42,6 +42,24 @@
         let rightPressed = false;
         let leftPressed = false;
 
+        document.addEventListener("keydown", keyDownHandler, false);
+        document.addEventListener("keyup", keyUpHandler, false);
+
+        function keyDownHandler(e) {
+            if (e.key === "Right" || e.key === "ArrowRight") {
+                rightPressed = true;
+            } else if (e.key === "Left" || e.key === "ArrowLeft") {
+                leftPressed = true;
+            }
+        }
+
+        function keyUpHandler(e) {
+            if (e.key === "Right" || e.key === "ArrowRight") {
+                rightPressed = false;
+            } else if (e.key === "Left" || e.key === "ArrowLeft") {
+                leftPressed = false;
+            }
+        }
 
         //ball function
         function drawBall() {
@@ -74,18 +92,26 @@
             drawBall();
             //call drawPaddle function
             drawPaddle();
-            //paint the ball in a new position after every frame
-            x += dx;
-            y += dy;
 
             //if ball hits side of canvas, bounce in opposite direction
             if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
                 dx = -dx;
             }
+            if (y + dy < ballRadius) {
+                dy = -dy;
+            }
             // same as above but top and bottom
             //use ballRadius to bounce ball from edges not center
-            if (y + dy > canvas.height - ballRadius || y + dy < ballRadius) {
-                dy = -dy;
+            else if (y + dy > canvas.height - ballRadius) {
+                if (x > paddleX && x < paddleX + paddleWidth) {
+                    dy = -dy;
+                }
+                else {
+                    alert("GAME OVER");
+                    document.location.reload();
+                    clearInterval(interval);
+
+                }
             }
 
             if (rightPressed) {
@@ -94,29 +120,14 @@
                 paddleX = Math.max(paddleX - 7, 0);
             }
 
-        }
+            //paint the ball in a new position after every frame
+            x += dx;
+            y += dy;
 
-        document.addEventListener("keydown", keyDownHandler, false);
-        document.addEventListener("keyup", keyUpHandler, false);
-
-        function keyDownHandler(e) {
-            if (e.key === "Right" || e.key === "ArrowRight") {
-                rightPressed = true;
-            } else if (e.key === "Left" || e.key === "ArrowLeft") {
-                leftPressed = true;
-            }
-        }
-
-        function keyUpHandler(e) {
-            if (e.key === "Right" || e.key === "ArrowRight") {
-                rightPressed = false;
-            } else if (e.key === "Left" || e.key === "ArrowLeft") {
-                leftPressed = false;
-            }
         }
 
         //function draw will be called every 10 milliseconds
-        setInterval(draw, 10);
+        const interval = setInterval(draw, 10);
 
     </script>
 </body>
