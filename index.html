@@ -21,9 +21,10 @@
 <body>
     <canvas id="myCanvas" width="480" height="320"></canvas>
     <script>
+        //canvas
         var canvas = document.getElementById("myCanvas");
         var ctx = canvas.getContext("2d");
-        //x a& y positions
+        // ball x & y positions
         let x = canvas.width / 2;
         let y = canvas.height - 30;
         //small values to help make it look like the ball is moving
@@ -32,6 +33,17 @@
         //ball radius
         const ballRadius = 10;
 
+        //paddle
+        const paddleHeight = 10;
+        const paddleWidth = 75;
+        let paddleX = (canvas.width - paddleWidth) / 2;
+
+        //paddle controls
+        let rightPressed = false;
+        let leftPressed = false;
+
+
+        //ball function
         function drawBall() {
             //begin instruction
             ctx.beginPath();
@@ -45,12 +57,23 @@
             ctx.closePath();
         }
 
+        //paddle function
+        function drawPaddle() {
+            ctx.beginPath();
+            ctx.rect(paddleX, canvas.height - paddleHeight, paddleWidth, paddleHeight);
+            ctx.fillStyle = "#0095DD";
+            ctx.fill();
+            ctx.closePath();
+        }
 
+        //ball moving funtion
         function draw() {
             //clear content so ball isn't in every frame painting a line
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             //call drawBall function
             drawBall();
+            //call drawPaddle function
+            drawPaddle();
             //paint the ball in a new position after every frame
             x += dx;
             y += dy;
@@ -65,7 +88,31 @@
                 dy = -dy;
             }
 
+            if (rightPressed) {
+                paddleX = Math.min(paddleX + 7, canvas.width - paddleWidth);
+            } else if (leftPressed) {
+                paddleX = Math.max(paddleX - 7, 0);
+            }
 
+        }
+
+        document.addEventListener("keydown", keyDownHandler, false);
+        document.addEventListener("keyup", keyUpHandler, false);
+
+        function keyDownHandler(e) {
+            if (e.key === "Right" || e.key === "ArrowRight") {
+                rightPressed = true;
+            } else if (e.key === "Left" || e.key === "ArrowLeft") {
+                leftPressed = true;
+            }
+        }
+
+        function keyUpHandler(e) {
+            if (e.key === "Right" || e.key === "ArrowRight") {
+                rightPressed = false;
+            } else if (e.key === "Left" || e.key === "ArrowLeft") {
+                leftPressed = false;
+            }
         }
 
         //function draw will be called every 10 milliseconds
